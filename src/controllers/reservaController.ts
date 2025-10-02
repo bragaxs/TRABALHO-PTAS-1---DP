@@ -1,55 +1,32 @@
 import { Request, Response } from "express";
-
-interface Reserva {
-  id: number;
-  sala: string;
-  data: string;
-  horaInicio: string;
-  horaFim: string;
-  participantes: number;
-  usuario: string;
-}
+import { Reserva } from "../models/reservaModel";
 
 let reservas: Reserva[] = [];
 
-// Listar reservas
-export const listarReservas = (req: Request, res: Response) => {
-  res.json({
-    mensagem: "Lista de reservas carregada com sucesso!",
-    reservas
-  });
+export const listarReservas = (_req: Request, res: Response) => {
+  res.json({ mensagem: "Lista de reservas carregada com sucesso!", reservas });
 };
 
-// Criar reserva
 export const criarReserva = (req: Request, res: Response) => {
-  const novaReserva: Reserva = {
-    id: reservas.length + 1,
-    ...req.body
-  };
+  const novaReserva = { id: reservas.length + 1, ...req.body } as Reserva;
   reservas.push(novaReserva);
-  res.status(201).json({
-    mensagem: "Reserva criada com sucesso!",
-    reserva: novaReserva
-  });
+  res.status(201).json({ mensagem: "Reserva criada com sucesso!", reserva: novaReserva });
 };
 
-// Atualizar reserva
 export const atualizarReserva = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const indice = reservas.findIndex(r => r.id === id);
+  if (indice === -1) return res.status(404).json({ erro: "Reserva não encontrada!" });
 
-  if (indice === -1) return res.status(404).json({ mensagem: "Reserva não encontrada" });
-
-  reservas[indice] = { id, ...req.body };
-  res.json({
-    mensagem: "Reserva atualizada com sucesso!",
-    reserva: reservas[indice]
-  });
+  reservas[indice] = { id, ...req.body } as Reserva;
+  res.json({ mensagem: "Reserva atualizada com sucesso!", reserva: reservas[indice] });
 };
 
-// Excluir reserva
 export const excluirReserva = (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  reservas = reservas.filter(r => r.id !== id);
+  const indice = reservas.findIndex(r => r.id === id);
+  if (indice === -1) return res.status(404).json({ erro: "Reserva não encontrada!" });
+
+  reservas.splice(indice, 1);
   res.json({ mensagem: `Reserva ${id} excluída com sucesso!` });
 };
