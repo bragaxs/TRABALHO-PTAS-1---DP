@@ -3,7 +3,9 @@ import { Usuario } from "../models/usuarioModel";
 
 let usuarios: Usuario[] = [];
 
-export const listarUsuarios = (_req: Request, res: Response) => {
+// _req indica que o parâmetro não é usado, cliente não envia nada
+
+export const listarUsuarios = (_req: Request, res: Response) => { 
   res.json({ mensagem: "Lista de usuários carregada com sucesso!", usuarios });
 };
 

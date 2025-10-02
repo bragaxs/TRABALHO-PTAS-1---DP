@@ -1,9 +1,9 @@
 export interface Reserva {
   id: number;
-  salaId: number;         // referência à Sala
-  data: string;           // YYYY-MM-DD
-  horaInicio: string;     // HH:MM
-  horaFim: string;        // HH:MM
+  salaId: number;         
+  data: string;           
+  horaInicio: string;     
+  horaFim: string;        
   participantes: number;
-  usuarioId: number;      // referência ao Usuário
+  usuarioId: number;      
 }
